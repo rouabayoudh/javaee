@@ -7,6 +7,8 @@
     <h2>Ajouter un Nouveau Produit</h2>
 
     <form action="ProduitServlet" method="post">
+        <input type="hidden" name="action" value="ajouter">
+
         <label for="nom">Nom :</label>
         <input type="text" id="nom" name="nom" required>
         <br><br>
@@ -28,5 +30,6 @@
 
     <br>
     <a href="ProduitServlet">Retour à la liste des produits</a>
+
 </body>
 </html>

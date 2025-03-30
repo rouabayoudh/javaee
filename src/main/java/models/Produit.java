@@ -11,8 +11,15 @@ public class Produit {
 
 
 
-    public Produit(String nom, String description, double prix, String image) {
+    public Produit(int id, String nom, String description, double prix, String image) {
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+        this.prix = prix;
+        this.image = image;
+    }
 
+    public Produit(String nom, String description, double prix, String image) {
         this.nom = nom;
         this.description = description;
         this.prix = prix;
