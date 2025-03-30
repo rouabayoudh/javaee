@@ -11,7 +11,7 @@ public class ProduitDAO {
     public ProduitDAO() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ecommerce", "root", "rouabayoudh2003");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ecommerce", "root", "azerty");
         } catch (ClassNotFoundException e) {
             System.err.println("Driver JDBC non trouvé !");
             e.printStackTrace();

@@ -30,14 +30,21 @@ public class ProduitServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nom = request.getParameter("nom");
-        String description = request.getParameter("description");
-        double prix = Double.parseDouble(request.getParameter("prix"));
-        String image = request.getParameter("image");
+        try {
+            String nom = request.getParameter("nom");
+            String description = request.getParameter("description");
+            double prix = Double.parseDouble(request.getParameter("prix"));
+            String image = request.getParameter("image");
 
-        Produit produit = new Produit(nom, description, prix, image);
-        produitDAO.ajouterProduit(produit);
+            Produit produit = new Produit(nom, description, prix, image);
+            produitDAO.ajouterProduit(produit);
 
-        response.sendRedirect("ProduitServlet");
+            response.sendRedirect("ProduitServlet");
+        } catch (Exception e) {
+            e.printStackTrace();  // Afficher l'erreur dans la console
+            request.setAttribute("error", "Erreur lors de l'ajout du produit !");
+            request.getRequestDispatcher("ajouterProduit.jsp").forward(request, response);
+        }
     }
+
 }
