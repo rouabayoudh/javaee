@@ -22,15 +22,48 @@ public class ProduitServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Produit> produits = produitDAO.getAllProduits();
-        request.setAttribute("produits", produits);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("listeProduits.jsp");
-        dispatcher.forward(request, response);
+        String action = request.getParameter("action");
+
+        if (action == null) {
+            List<Produit> produits = produitDAO.getAllProduits();
+            request.setAttribute("produits", produits);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("listeProduits.jsp");
+            dispatcher.forward(request, response);
+        } else if (action.equals("details")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Produit produit = produitDAO.getProduitById(id);
+            request.setAttribute("produit", produit);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("detailsProduit.jsp");
+            dispatcher.forward(request, response);
+        } else if (action.equals("modifier")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Produit produit = produitDAO.getProduitById(id);
+            request.setAttribute("produit", produit);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("modifierProduit.jsp");
+            dispatcher.forward(request, response);
+        } else if (action.equals("supprimer")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            produitDAO.deleteProduit(id);
+            response.sendRedirect("ProduitServlet");
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+        String action = request.getParameter("action");
+
+        if ("modifier".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String nom = request.getParameter("nom");
+            String description = request.getParameter("description");
+            double prix = Double.parseDouble(request.getParameter("prix"));
+            String image = request.getParameter("image");
+
+            Produit produit = new Produit(id, nom, description, prix, image);
+            produitDAO.updateProduit(produit);
+            response.sendRedirect("ProduitServlet");
+        }
+        else if ("ajouter".equals(action)) {
             String nom = request.getParameter("nom");
             String description = request.getParameter("description");
             double prix = Double.parseDouble(request.getParameter("prix"));
@@ -40,10 +73,6 @@ public class ProduitServlet extends HttpServlet {
             produitDAO.ajouterProduit(produit);
 
             response.sendRedirect("ProduitServlet");
-        } catch (Exception e) {
-            e.printStackTrace();  // Afficher l'erreur dans la console
-            request.setAttribute("error", "Erreur lors de l'ajout du produit !");
-            request.getRequestDispatcher("ajouterProduit.jsp").forward(request, response);
         }
     }
 
